@@ -15,7 +15,7 @@ namespace Grid
         [SerializeField] private IconInvisible icon;
         public Button ClickButton;
         
-        public void Setup()
+        public virtual void Setup()
         {
             ClickButton = GetComponent<Button>();
         }
@@ -33,6 +33,8 @@ namespace Grid
 
         public void CancelDraggableView()
         {
+            ActivateBackdrop();
+            ChangeBackdropAlpha(0f);
             icon.raycastTarget = true;
             iconSprite.color = new Color(
                 iconSprite.color.r, 

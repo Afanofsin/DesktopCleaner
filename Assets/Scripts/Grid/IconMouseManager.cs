@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using R3;
 using R3.Triggers;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Grid
 {
     public class IconMouseManager
     {
-        private IconGrid _grid;
         private GameObject _lastClickedIcon;
         private float _doubleClickTimeframe = 0.2f;
         
@@ -16,11 +16,14 @@ namespace Grid
         private IconView lastClickedIcon;
         private IconView lastDraggedItem;
         private GameObject lastIconSlot;
+        private IconGrid _currentGrid;
         
 
-        public IconMouseManager(IconGrid grid)
+        public IconMouseManager()
         {
-            _grid = grid;
+            lastClickedIcon = GridService.G.lastClickedIcon;
+            lastDraggedItem = GridService.G.lastDraggedItem;
+            lastIconSlot = GridService.G.lastIconSlot;
         }
 
         public void SubscribeButton(IconView view)
@@ -30,31 +33,35 @@ namespace Grid
             view.ClickButton.OnPointerEnterAsObservable().Subscribe(OnPointerEnter).AddTo(view);
             view.ClickButton.OnPointerExitAsObservable().Subscribe(eventData => OnPointerExit(view, eventData)).AddTo(view);
             
-            view.ClickButton.OnBeginDragAsObservable().Subscribe(eventData => OnBeginDrag(view, eventData)).AddTo(view);
+            view.ClickButton.OnBeginDragAsObservable().Subscribe(eventData => OnBeginDrag(view,eventData)).AddTo(view);
             view.ClickButton.OnDragAsObservable().Subscribe(eventData => OnDrag(view, eventData)).AddTo(view);
-            view.ClickButton.OnEndDragAsObservable().Subscribe(eventData => OnEndDrag(view, eventData)).AddTo(view);
+            view.ClickButton.OnEndDragAsObservable().Subscribe(eventData => OnEndDrag(view,eventData)).AddTo(view);
         }
         
         public void OnBeginDrag(IconView eventView, PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left) return;
             
-            foreach (var kvp in _grid.IconOccupations)
-            {
-                if (kvp.Value == eventView)
-                {
-                    lastIconSlot = kvp.Key;
-                    break;
-                }
-            }
+            CleanLastIcon();
+            lastIconSlot = eventView.gameObject.transform.parent.gameObject;
+            _currentGrid = GridService.G.SearchForActiveGridWithSlot(lastIconSlot);
+            
+            // foreach (var kvp in grid.IconOccupations)
+            // {
+            //     if (kvp.Value == eventView)
+            //     {
+            //         lastIconSlot = kvp.Key;
+            //         break;
+            //     }
+            // }
 
-            if (lastIconSlot == null)
+            if (lastIconSlot == null || _currentGrid == null)
             {
-                Debug.LogError("Last Icon Slot is null");
+                Debug.LogError("Last Icon Slot or Grid is null");
                 return;
             }
 
-            eventView.transform.SetParent(_grid.CanvasRoot);
+            eventView.transform.SetParent(_currentGrid.CanvasRoot);
             eventView.MakeViewDraggable();
         }
 
@@ -66,21 +73,51 @@ namespace Grid
         public void OnEndDrag(IconView eventView, PointerEventData eventData)
         {
             GameObject droppedOn = eventData.pointerCurrentRaycast.gameObject;
-            if (!_grid.TryMoveIcon(eventView, droppedOn, lastIconSlot))
+
+            if (droppedOn == null)
             {
-                eventView.gameObject.transform.SetParent(lastIconSlot.transform);
-                RectTransform rect = eventView.GetComponent<RectTransform>();
-                rect.anchoredPosition = Vector2.zero;
-                eventView.CancelDraggableView();
+                CancelDrag(eventView);
+                return;
+            }
+            
+            IconView hitIcon = droppedOn.GetComponent<IconView>();
+            if (hitIcon != null && hitIcon != eventView)
+            {
+                droppedOn = hitIcon.transform.parent.gameObject;
+            }
+            
+            if (!_currentGrid.TryMoveIcon(eventView, droppedOn, lastIconSlot, out var swappedIcon))
+            {
+                CancelDrag(eventView);
             }
             else
             {
                 eventView.gameObject.transform.SetParent(droppedOn.transform);
                 RectTransform rect = eventView.GetComponent<RectTransform>();
                 rect.anchoredPosition = Vector2.zero;
+
+                if (swappedIcon != null)
+                {
+                    swappedIcon.gameObject.transform.SetParent(lastIconSlot.transform);
+                    rect = swappedIcon.GetComponent<RectTransform>();
+                    rect.anchoredPosition = Vector2.zero;
+                }
+
                 lastIconSlot = null;
+                
                 eventView.CancelDraggableView();
             }
+  
+            eventView.ChangeBackdropAlpha(0.1f);
+            eventView.ActivateBackdrop();
+        }
+
+        private void CancelDrag(IconView eventView)
+        {
+            eventView.gameObject.transform.SetParent(lastIconSlot.transform);
+            RectTransform rect = eventView.GetComponent<RectTransform>();
+            rect.anchoredPosition = Vector2.zero;
+            eventView.CancelDraggableView();
         }
 
         public void OnPointerClick(PointerEventData eventData)

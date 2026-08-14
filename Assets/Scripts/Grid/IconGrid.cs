@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Grid;
 using R3.Triggers;
@@ -13,23 +14,41 @@ public class IconGrid : MonoBehaviour
     [SerializeField] private int slotToSpawn = 0;
 
     public Transform CanvasRoot => canvasRoot;
+
+    public HashSet<GameObject> AllIconSlots = new();
     
-    private Dictionary<int, GameObject> _iconSlots = new();
-    public Dictionary<int, GameObject> IconSlots => _iconSlots;
+    private Dictionary<int, GameObject> _iconSlotsByID = new();
+    public Dictionary<int, GameObject> IconSlotsByID => _iconSlotsByID;
     private Dictionary<GameObject, IconView> _iconOccupations = new();
     public Dictionary<GameObject, IconView> IconOccupations => _iconOccupations;
 
-    private IconMouseManager _iconMouseManager;
+    //private IconMouseManager _iconMouseManager;
+
+    private void OnEnable()
+    {
+        GridService.G?.AddToActiveGrid(this);
+    }
+
+    private void OnDisable()
+    {
+        GridService.G?.RemoveFromActiveGrid(this);
+    }
+
+    public void Initialize()
+    {
+        GridService.G?.RegisterGrid(this);
+    }
 
     void Awake()
     {
-        _iconMouseManager = new IconMouseManager(this);
+        //_iconMouseManager = new IconMouseManager(this);
         
         int id = 0;
         for (int i = 0; i < slotsAmount; i++)
         {
             var obj = Instantiate(iconSlotPrefab, transform);
-            _iconSlots.Add(id, obj);
+            _iconSlotsByID.Add(id, obj);
+            AllIconSlots.Add(obj);
             
             id++;
         }
@@ -47,20 +66,21 @@ public class IconGrid : MonoBehaviour
     [ContextMenu("Spawn Icon")]
     public void SpawnIconAtSlot()
     {
-        var slotObj = _iconSlots[slotToSpawn];
+        var slotObj = _iconSlotsByID[slotToSpawn];
         var obj = Instantiate(testIconPrefab, slotObj.transform);
         var iconView = obj.GetComponent<IconView>();
         
         iconView.Setup();
-        _iconMouseManager.SubscribeButton(iconView);
+        GridService.G.MouseManager.SubscribeButton(iconView);
         
         _iconOccupations[slotObj] = iconView;
     }
 
-    public bool TryMoveIcon(IconView movedView, GameObject droppedOn, GameObject lastIconSlot)
+    public bool TryMoveIcon(IconView movedView, GameObject droppedOn, GameObject lastIconSlot, out IconView swappedView)
     {
+        swappedView = null;
         bool found = false;
-        foreach (var kvp in _iconSlots)
+        foreach (var kvp in _iconSlotsByID)
         {
             if (kvp.Value == droppedOn)
             {
@@ -68,25 +88,69 @@ public class IconGrid : MonoBehaviour
                 break;
             }
         }
-        if(!found) return false;
 
-        _iconOccupations.TryGetValue(droppedOn, out IconView dictView);
-
-        if (dictView == null)
+        if (!found)
         {
-            _iconOccupations[droppedOn] = movedView;
-            _iconOccupations[lastIconSlot] = null;
+            var grid = GridService.G.SearchForActiveGridWithSlot(droppedOn);
+            if (grid == null) return false;
+
+            grid.IconOccupations.TryGetValue(droppedOn, out swappedView);
+            if (swappedView == null)
+            {
+                MoveIconOnAnotherGrid(grid, movedView, droppedOn, lastIconSlot);
+            }
+            else
+            {
+                SwapIconsBetweenGrids(grid, movedView, swappedView, lastIconSlot, droppedOn);
+            }
         }
         else
         {
-            SwapIcons(movedView, dictView, lastIconSlot,  droppedOn);
+            _iconOccupations.TryGetValue(droppedOn, out swappedView);
+            if (swappedView == null)
+            {
+                MoveIcon(movedView, droppedOn, lastIconSlot);
+            }
+            else
+            {
+                SwapIcons(lastIconSlot, droppedOn );
+            }
         }
         
         return true;
     }
 
-    public void SwapIcons(IconView firstView, IconView secondView, GameObject firstSlot, GameObject secondSlot)
+    private void MoveIcon(IconView movedView, GameObject droppedOn, GameObject lastIconSlot)
+    {
+        _iconOccupations[droppedOn] = movedView;
+        _iconOccupations[lastIconSlot] = null;
+    }
+
+    private void MoveIconOnAnotherGrid(IconGrid grid, IconView movedView, GameObject droppedOn, GameObject lastIconSlot)
+    {
+        grid.IconOccupations[droppedOn] = movedView;
+        _iconOccupations[lastIconSlot] = null;
+
+        // grid.AttachIconToManager(movedView);
+    }
+
+    private void SwapIcons(GameObject firstSlot, GameObject secondSlot)
     {
         (_iconOccupations[firstSlot], _iconOccupations[secondSlot]) = (_iconOccupations[secondSlot], _iconOccupations[firstSlot]);
     }
+    
+    private void SwapIconsBetweenGrids(IconGrid grid, IconView movedView, IconView swappedView, GameObject firstSlot, GameObject secondSlot)
+    {
+        this._iconOccupations[firstSlot] = swappedView;
+        grid.IconOccupations[secondSlot] = movedView;
+        
+        // this.AttachIconToManager(swappedView);
+        // grid.AttachIconToManager(movedView);
+
+    }
+
+    // public void AttachIconToManager(IconView movedView)
+    // {
+    //     _iconMouseManager.SubscribeButton(movedView);
+    // }
 }
