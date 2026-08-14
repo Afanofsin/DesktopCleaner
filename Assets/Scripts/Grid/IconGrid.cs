@@ -8,7 +8,7 @@ public class IconGrid : MonoBehaviour
 {
     [SerializeField] private GameObject iconSlotPrefab;
     [SerializeField] private IconView testIconPrefab;
-    [SerializeField] private Transform canvasRoot;
+    [SerializeField] private RectTransform canvasRoot;
     [SerializeField] private int slotsAmount;
 
     [SerializeField] private int slotToSpawn = 0;
@@ -27,6 +27,10 @@ public class IconGrid : MonoBehaviour
     private void OnEnable()
     {
         GridService.G?.AddToActiveGrid(this);
+        if (canvasRoot == null)
+        {
+            canvasRoot = GridService.G?.RootCanvasTransform;
+        }
     }
 
     private void OnDisable()
@@ -53,21 +57,26 @@ public class IconGrid : MonoBehaviour
             id++;
         }
         
-        SpawnIconAtSlot();
-        slotToSpawn = 1;
-        SpawnIconAtSlot();
-        slotToSpawn = 2;
-        SpawnIconAtSlot();
-        slotToSpawn = 8;
-        SpawnIconAtSlot();
+        // SpawnIconAtSlot();
+        // slotToSpawn = 1;
+        // SpawnIconAtSlot();
+        // slotToSpawn = 2;
+        // SpawnIconAtSlot();
+        // slotToSpawn = 8;
+        // SpawnIconAtSlot();
     }
     
     
     [ContextMenu("Spawn Icon")]
     public void SpawnIconAtSlot()
     {
-        var slotObj = _iconSlotsByID[slotToSpawn];
-        var obj = Instantiate(testIconPrefab, slotObj.transform);
+        SpawnIconAtSlot(slotToSpawn, testIconPrefab);
+    }
+
+    public void SpawnIconAtSlot(int slot, IconView view)
+    {
+        var slotObj = _iconSlotsByID[slot];
+        var obj = Instantiate(view, slotObj.transform);
         var iconView = obj.GetComponent<IconView>();
         
         iconView.Setup();
@@ -75,7 +84,7 @@ public class IconGrid : MonoBehaviour
         
         _iconOccupations[slotObj] = iconView;
     }
-
+    
     public bool TryMoveIcon(IconView movedView, GameObject droppedOn, GameObject lastIconSlot, out IconView swappedView)
     {
         swappedView = null;

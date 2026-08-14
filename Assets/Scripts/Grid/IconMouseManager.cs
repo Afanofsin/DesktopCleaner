@@ -67,7 +67,16 @@ namespace Grid
 
         public void OnDrag(IconView eventView, PointerEventData eventData)
         {
-            eventView.transform.position = eventData.position;
+            //eventView.transform.position = eventData.position;
+            
+            RectTransform rect = eventView.GetComponent<RectTransform>();
+            
+            Camera cam = eventData.pressEventCamera != null ? eventData.pressEventCamera : GridService.G.Camera;
+
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(rect, eventData.position, cam, out Vector3 worldPoint))
+            {
+                rect.position = worldPoint;
+            }
         }
 
         public void OnEndDrag(IconView eventView, PointerEventData eventData)
@@ -126,14 +135,14 @@ namespace Grid
             if (lastClickedIcon?.gameObject == eventData.pointerClick)
             {
                 Debug.Log("Clicked the same button");
+                view = lastClickedIcon;
                 if (_timeOfLastClick > Time.time - _doubleClickTimeframe)
                 {
                     _timeOfLastClick = Time.time;
-                    DoubleClickHandler(eventData);
+                    DoubleClickHandler(view, eventData);
                     return;
                 }
                 _timeOfLastClick = Time.time;
-                view = lastClickedIcon;
             }
             else
             {
@@ -142,15 +151,18 @@ namespace Grid
             
                 var obj = eventData.pointerClick;
                 view = obj.GetComponent<IconView>();
+                
                 lastClickedIcon = view;
+                _timeOfLastClick = Time.time;
             }
             
-            view.ChangeBackdropAlpha(1f);
+            view?.ChangeBackdropAlpha(1f);
         }
 
-        public void DoubleClickHandler(PointerEventData eventData)
+        public void DoubleClickHandler(IconView view, PointerEventData eventData)
         {
             Debug.Log("DoubleClick");
+            view?.OnDoubleClick();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -160,6 +172,9 @@ namespace Grid
             if (lastClickedIcon?.gameObject == obj) return;
             
             var view = obj.GetComponent<IconView>();
+
+            if (view == null) return;
+            
             view.ChangeBackdropAlpha(0.1f);
             view.ActivateBackdrop();
         }

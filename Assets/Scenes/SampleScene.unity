@@ -203,6 +203,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1371139905 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2345661012581539162, guid: 19713a162d3e32a49aaa6d3ff07fb728, type: 3}
+  m_PrefabInstance: {fileID: 5442712185402800601}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1902372831939330876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1123,6 +1128,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1144467001806859492, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1371139905}
     - target: {fileID: 1233316887785453979, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6395,6 +6404,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8130234747846142053, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8130234747846142053, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
     - target: {fileID: 8169332498608431981, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

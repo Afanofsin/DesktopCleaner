@@ -1,9 +1,4 @@
-﻿using System;
-using R3;
-using R3.Triggers;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Grid
@@ -54,5 +49,8 @@ namespace Grid
         
         public void ActivateBackdrop() => selectBackdrop.gameObject.SetActive(true);
         public void DeactivateBackdrop() => selectBackdrop.gameObject.SetActive(false);
+
+        public virtual void OnDoubleClick()
+        { }
     }
 }
