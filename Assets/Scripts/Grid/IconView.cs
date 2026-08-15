@@ -9,6 +9,8 @@ namespace Grid
         [SerializeField] private Image iconSprite;
         [SerializeField] private IconInvisible icon;
         public Button ClickButton;
+
+        public bool isDraggingAllowed = true;
         
         public virtual void Setup()
         {

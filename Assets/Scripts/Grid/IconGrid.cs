@@ -1,28 +1,31 @@
-using System;
 using System.Collections.Generic;
 using Grid;
-using R3.Triggers;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
-public class IconGrid : MonoBehaviour
+public class IconGrid : SerializedMonoBehaviour
 {
     [SerializeField] private GameObject iconSlotPrefab;
-    [SerializeField] private IconView testIconPrefab;
     [SerializeField] private RectTransform canvasRoot;
     [SerializeField] private int slotsAmount;
+    [SerializeField] private Transform rootForIcons;
+    
+    [OdinSerialize] private Dictionary<int, IconView> iconPlacement;
+    [SerializeField] private bool shouldBeRandomlyPopulated = true;
 
-    [SerializeField] private int slotToSpawn = 0;
+    [SerializeField] [PropertyRange(0, "slotsAmount")]
+    private int slotsToPopulate;
 
     public Transform CanvasRoot => canvasRoot;
-
-    public HashSet<GameObject> AllIconSlots = new();
     
+    public HashSet<GameObject> AllIconSlots = new();
     private Dictionary<int, GameObject> _iconSlotsByID = new();
     public Dictionary<int, GameObject> IconSlotsByID => _iconSlotsByID;
     private Dictionary<GameObject, IconView> _iconOccupations = new();
     public Dictionary<GameObject, IconView> IconOccupations => _iconOccupations;
 
-    //private IconMouseManager _iconMouseManager;
+    private bool isInit = false;
 
     private void OnEnable()
     {
@@ -40,42 +43,81 @@ public class IconGrid : MonoBehaviour
 
     public void Initialize()
     {
+        Debug.Log("Init");
         GridService.G?.RegisterGrid(this);
-    }
-
-    void Awake()
-    {
-        //_iconMouseManager = new IconMouseManager(this);
-        
+        GridService.G?.AddToActiveGrid(this);
+        if (rootForIcons == null) rootForIcons = transform;
         int id = 0;
         for (int i = 0; i < slotsAmount; i++)
         {
-            var obj = Instantiate(iconSlotPrefab, transform);
+            var obj = Instantiate(iconSlotPrefab, rootForIcons);
             _iconSlotsByID.Add(id, obj);
             AllIconSlots.Add(obj);
             
             id++;
         }
-        
-        // SpawnIconAtSlot();
-        // slotToSpawn = 1;
-        // SpawnIconAtSlot();
-        // slotToSpawn = 2;
-        // SpawnIconAtSlot();
-        // slotToSpawn = 8;
-        // SpawnIconAtSlot();
+
+        foreach (var kvp in iconPlacement)
+        {
+            SpawnIconAtSlot(kvp.Key,kvp.Value);
+        }
+
+        if (shouldBeRandomlyPopulated)
+        {
+            int slotN = 0;
+            for (int i = 0; i < slotsToPopulate; i++)
+            {
+                for (; slotN < slotsAmount; slotN++)
+                {
+                    IconView view = GridService.G?.RandomIconProvider.GetIcon(this, true);
+                    SpawnIconAtSlot(slotN, view);
+                }
+            }
+        }
+
+        isInit = true;
     }
-    
-    
-    [ContextMenu("Spawn Icon")]
-    public void SpawnIconAtSlot()
+
+    void Start()
     {
-        SpawnIconAtSlot(slotToSpawn, testIconPrefab);
+        //Debug.Log("Awakening");
+        if (isInit) return;
+        Initialize();
+    }
+
+    public GameObject AddIcon(IconView view)
+    {
+        var unoccupiedSlots = new Dictionary<int, GameObject>();
+        int lowestFreeSlot = int.MaxValue;
+        
+        foreach (var (id, slotObj) in _iconSlotsByID)
+        {
+            if(!_iconOccupations.TryGetValue(slotObj, out var icon) || icon == null)
+            {
+                if (id < lowestFreeSlot) lowestFreeSlot = id;
+                unoccupiedSlots.Add(id, slotObj);
+            }
+        }
+
+        if (unoccupiedSlots.Count == 0) return null;
+
+        var obj = _iconSlotsByID[lowestFreeSlot];
+        _iconOccupations[obj] = view;
+        return obj;
+    }
+
+    public void RemoveIcon(GameObject lastIconSlot)
+    {
+        _iconOccupations.Remove(lastIconSlot);
     }
 
     public void SpawnIconAtSlot(int slot, IconView view)
     {
         var slotObj = _iconSlotsByID[slot];
+
+        _iconOccupations.TryGetValue(slotObj, out var dictView);
+        if (dictView != null) return;
+        
         var obj = Instantiate(view, slotObj.transform);
         var iconView = obj.GetComponent<IconView>();
         
@@ -132,15 +174,13 @@ public class IconGrid : MonoBehaviour
     private void MoveIcon(IconView movedView, GameObject droppedOn, GameObject lastIconSlot)
     {
         _iconOccupations[droppedOn] = movedView;
-        _iconOccupations[lastIconSlot] = null;
+        _iconOccupations.Remove(lastIconSlot);
     }
 
     private void MoveIconOnAnotherGrid(IconGrid grid, IconView movedView, GameObject droppedOn, GameObject lastIconSlot)
     {
         grid.IconOccupations[droppedOn] = movedView;
-        _iconOccupations[lastIconSlot] = null;
-
-        // grid.AttachIconToManager(movedView);
+        _iconOccupations.Remove(lastIconSlot);
     }
 
     private void SwapIcons(GameObject firstSlot, GameObject secondSlot)
@@ -152,14 +192,5 @@ public class IconGrid : MonoBehaviour
     {
         this._iconOccupations[firstSlot] = swappedView;
         grid.IconOccupations[secondSlot] = movedView;
-        
-        // this.AttachIconToManager(swappedView);
-        // grid.AttachIconToManager(movedView);
-
     }
-
-    // public void AttachIconToManager(IconView movedView)
-    // {
-    //     _iconMouseManager.SubscribeButton(movedView);
-    // }
 }

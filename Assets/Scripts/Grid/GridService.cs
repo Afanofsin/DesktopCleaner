@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Grid.IconData;
+using R3;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -18,16 +20,21 @@ namespace Grid
         [SerializeField] private RectTransform upperLeftBoundryForFolders;
         [SerializeField] private RectTransform lowerRightBoundryForFolders;
         [SerializeField] private RectTransform rootCanvasTransform;
-        [SerializeField] private Camera camera;
+        [SerializeField] private Camera cam;
+        [SerializeField] private RandomIconProvider randomIconProvider;
         
         private List<IconGrid> _totalGridList = new();
         private List<IconGrid> _activeGridList = new();
         public List<IconGrid> ActiveGrids => _activeGridList;
         public List<IconGrid> TotalGridList => _totalGridList;
-        public Camera Camera => camera;
+        public Camera Camera => cam;
         public RectTransform  RootCanvasTransform => rootCanvasTransform;
+        public RandomIconProvider RandomIconProvider => randomIconProvider;
         
-        public IconMouseManager MouseManager { get; private set; }
+        [HideInInspector] public IconMouseManager MouseManager { get; private set; }
+
+        [HideInInspector] public Subject<Unit> OnFolderWindowOpened = new();
+        [HideInInspector] public Subject<Unit> OnFolderWindowClosed = new();
         
         [HideInInspector] public IconView lastClickedIcon;
         [HideInInspector] public IconView lastDraggedItem;
@@ -44,15 +51,11 @@ namespace Grid
             Destroy(gameObject);
         }
 
-        private void Start()
+        private async UniTaskVoid Start()
         {
-            var grid = _activeGridList.FirstOrDefault();
-            if (grid == null) return;
-
-            foreach (var kvp in iconPlacement)
-            {
-                grid.SpawnIconAtSlot(kvp.Key, kvp.Value);
-            }
+            await UniTask.DelayFrame(2);
+            await UniTask.WaitUntil(() => randomIconProvider.isInitialized == true,
+                cancellationToken: this.GetCancellationTokenOnDestroy());
         }
 
         public void RegisterGrid(IconGrid grid)
@@ -62,6 +65,7 @@ namespace Grid
 
         public void AddToActiveGrid(IconGrid grid)
         {
+            if (_activeGridList.Contains(grid)) return;
             _activeGridList.Add(grid);
         }
         
@@ -100,6 +104,54 @@ namespace Grid
             float maxY = Mathf.Max(posA.y, posB.y);
 
             return new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+        }
+        
+        public (IconGrid targetGrid, GameObject closestSlot) GetClosestSlotAtPosition
+        (Vector2 screenPosition, float maxSnapDistance = 150f)
+        {
+            IconGrid targetGrid = null;
+            for (int i = _activeGridList.Count - 1; i >= 0; i--)
+            {
+                var grid = _activeGridList[i];
+                if (grid == null || !grid.gameObject.activeInHierarchy) continue;
+
+                RectTransform gridRect = grid.GetComponent<RectTransform>();
+                if (gridRect != null && RectTransformUtility.RectangleContainsScreenPoint(gridRect, screenPosition, cam))
+                {
+                    targetGrid = grid;
+                    break; // Found the top-most window
+                }
+            }
+            
+            // Fallback
+            if (targetGrid == null && _activeGridList.Count > 0)
+            {
+                targetGrid = _activeGridList[0];
+            }
+
+            if (targetGrid == null) return (null, null);
+
+            // 2. Find the closest slot in the selected target grid
+            GameObject closestSlot = null;
+            float closestDistSqr = float.MaxValue;
+            float maxDistSqr = maxSnapDistance * maxSnapDistance;
+
+            foreach (var slot in targetGrid.AllIconSlots)
+            {
+                if (slot == null || !slot.activeInHierarchy) continue;
+
+                RectTransform slotRect = slot.GetComponent<RectTransform>();
+                Vector2 slotScreenPos = RectTransformUtility.WorldToScreenPoint(cam, slotRect.position);
+
+                float distSqr = (slotScreenPos - screenPosition).sqrMagnitude;
+                if (distSqr < closestDistSqr && distSqr <= maxDistSqr)
+                {
+                    closestDistSqr = distSqr;
+                    closestSlot = slot;
+                }
+            }
+
+            return (targetGrid, closestSlot);
         }
     }
 }
