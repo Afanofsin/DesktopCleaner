@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using R3;
 using R3.Triggers;
 using UnityEngine;
@@ -75,28 +76,7 @@ namespace Grid
         private void OnEndDrag(IconView eventView, PointerEventData eventData)
         {
             if (!eventView.isDraggingAllowed) return;
-            // GameObject droppedOn = eventData.pointerCurrentRaycast.gameObject;
-            //
-            // if (droppedOn == null)
-            // {
-            //     CancelDrag(eventView);
-            //     return;
-            // }
-            //
-            // IconView hitIcon = droppedOn.GetComponent<IconView>();
-            // if (hitIcon != null && hitIcon != eventView)
-            // {
-            //     droppedOn = hitIcon.transform.parent.gameObject;
-            // }
-            // //
-            // else
-            // {
-            //     var targetGrid = GridService.G?.SearchForActiveGridWithSlot(droppedOn);
-            //     if (targetGrid != null && targetGrid.IconOccupations.TryGetValue(droppedOn, out var existingIcon))
-            //     {
-            //         hitIcon = existingIcon;
-            //     }
-            // }
+            
             
             var (targetGrid, droppedOn) = GridService.G.GetClosestSlotAtPosition(eventData.position, maxSnapDistance: 200f);
         
@@ -108,6 +88,25 @@ namespace Grid
 
             // 2. Check if the resolved slot already has an icon
             targetGrid.IconOccupations.TryGetValue(droppedOn, out var hitIcon);
+
+            if (eventView is FolderView draggedFolder && hitIcon is BinView)
+            {
+                if (!draggedFolder.isEmpty)
+                {
+                    CancelDrag(eventView);
+                    return;
+                }
+            }
+            
+            if (hitIcon is BinView bin)
+            {
+                bin.PutInBin(eventView);
+                _currentGrid.RemoveIcon(lastIconSlot);
+                lastIconSlot = null;
+                eventView.CancelDraggableView();
+                GameObject.Destroy(eventView.gameObject);
+                return;
+            }
             
             if (hitIcon is FolderView folder)
             {
@@ -123,7 +122,6 @@ namespace Grid
                 
                     eventView.CancelDraggableView();
                 }
-
                 return;
             }
             
@@ -146,49 +144,6 @@ namespace Grid
                 eventView.ChangeBackdropAlpha(0.1f);
                 eventView.ActivateBackdrop();
             }    
-                
-            //
-            // if (!_currentGrid.TryMoveIcon(eventView, droppedOn, lastIconSlot, out var swappedIcon))
-            // {
-            //     CancelDrag(eventView);
-            // }
-            // //else if (swappedIcon is BinView)
-            // else if (swappedIcon is FolderView folder)
-            // {
-            //     var slotToMoveTo = folder.PutInFolder(eventView);
-            //     if (slotToMoveTo == null) CancelDrag(eventView);
-            //     else
-            //     {
-            //         eventView.gameObject.transform.SetParent(slotToMoveTo.transform);
-            //         RectTransform rect = eventView.GetComponent<RectTransform>();
-            //         rect.anchoredPosition = Vector2.zero;
-            //         
-            //         _currentGrid.RemoveIcon(lastIconSlot);
-            //         
-            //         lastIconSlot = null;
-            //     
-            //         eventView.CancelDraggableView();
-            //     }
-            // }
-            // else
-            // {
-            //     eventView.gameObject.transform.SetParent(droppedOn.transform);
-            //     RectTransform rect = eventView.GetComponent<RectTransform>();
-            //     rect.anchoredPosition = Vector2.zero;
-            //
-            //     if (swappedIcon != null)
-            //     {
-            //         swappedIcon.gameObject.transform.SetParent(lastIconSlot.transform);
-            //         rect = swappedIcon.GetComponent<RectTransform>();
-            //         rect.anchoredPosition = Vector2.zero;
-            //     }
-            //
-            //     lastIconSlot = null;
-            //     
-            //     eventView.CancelDraggableView();
-            //     eventView.ChangeBackdropAlpha(0.1f);
-            //     eventView.ActivateBackdrop();
-            // }
         }
         
         private void SnapToSlotTransform(IconView view, Transform slotTransform)
@@ -266,7 +221,7 @@ namespace Grid
 
             if (view == null) return;
             
-            view.ChangeBackdropAlpha(0.1f);
+            view.ChangeBackdropAlpha(0.35f);
             view.ActivateBackdrop();
         }
         
@@ -286,3 +241,71 @@ namespace Grid
         }
     }
 }
+
+
+
+// GameObject droppedOn = eventData.pointerCurrentRaycast.gameObject;
+//
+// if (droppedOn == null)
+// {
+//     CancelDrag(eventView);
+//     return;
+// }
+//
+// IconView hitIcon = droppedOn.GetComponent<IconView>();
+// if (hitIcon != null && hitIcon != eventView)
+// {
+//     droppedOn = hitIcon.transform.parent.gameObject;
+// }
+// //
+// else
+// {
+//     var targetGrid = GridService.G?.SearchForActiveGridWithSlot(droppedOn);
+//     if (targetGrid != null && targetGrid.IconOccupations.TryGetValue(droppedOn, out var existingIcon))
+//     {
+//         hitIcon = existingIcon;
+//     }
+// }
+
+//
+// if (!_currentGrid.TryMoveIcon(eventView, droppedOn, lastIconSlot, out var swappedIcon))
+// {
+//     CancelDrag(eventView);
+// }
+// //else if (swappedIcon is BinView)
+// else if (swappedIcon is FolderView folder)
+// {
+//     var slotToMoveTo = folder.PutInFolder(eventView);
+//     if (slotToMoveTo == null) CancelDrag(eventView);
+//     else
+//     {
+//         eventView.gameObject.transform.SetParent(slotToMoveTo.transform);
+//         RectTransform rect = eventView.GetComponent<RectTransform>();
+//         rect.anchoredPosition = Vector2.zero;
+//         
+//         _currentGrid.RemoveIcon(lastIconSlot);
+//         
+//         lastIconSlot = null;
+//     
+//         eventView.CancelDraggableView();
+//     }
+// }
+// else
+// {
+//     eventView.gameObject.transform.SetParent(droppedOn.transform);
+//     RectTransform rect = eventView.GetComponent<RectTransform>();
+//     rect.anchoredPosition = Vector2.zero;
+//
+//     if (swappedIcon != null)
+//     {
+//         swappedIcon.gameObject.transform.SetParent(lastIconSlot.transform);
+//         rect = swappedIcon.GetComponent<RectTransform>();
+//         rect.anchoredPosition = Vector2.zero;
+//     }
+//
+//     lastIconSlot = null;
+//     
+//     eventView.CancelDraggableView();
+//     eventView.ChangeBackdropAlpha(0.1f);
+//     eventView.ActivateBackdrop();
+// }

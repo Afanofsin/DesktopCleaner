@@ -18,13 +18,14 @@ public class IconGrid : SerializedMonoBehaviour
     private int slotsToPopulate;
 
     public Transform CanvasRoot => canvasRoot;
+    public int IconCount => IconOccupations.Count;
     
     public HashSet<GameObject> AllIconSlots = new();
     private Dictionary<int, GameObject> _iconSlotsByID = new();
     public Dictionary<int, GameObject> IconSlotsByID => _iconSlotsByID;
     private Dictionary<GameObject, IconView> _iconOccupations = new();
     public Dictionary<GameObject, IconView> IconOccupations => _iconOccupations;
-
+    
     private bool isInit = false;
 
     private void OnEnable()

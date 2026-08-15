@@ -1,4 +1,6 @@
+using Grid;
 using R3;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +15,7 @@ public class IconInvisible : Graphic
     {
         base.Awake();
         _button = GetComponent<Button>();
+        //if (_button == null) return;
         //_button.OnClickAsObservable().Subscribe(_ => OnButtonClick()).AddTo(this);
     }
 
@@ -22,6 +25,6 @@ public class IconInvisible : Graphic
     
     public void OnButtonClick()
     {
-        Debug.Log("OnButtonClick");
+        GridService.G?.MouseManager.CleanLastIcon();
     }
 }

@@ -9,9 +9,8 @@ namespace Grid
         [SerializeField] private IconGrid folderPrefab;
         [SerializeField] private MainWindow folderWindow;
         
-        
-        bool isFolderActive => folderPrefab.gameObject.activeSelf;
-        bool isEmpty => folderPrefab.IconOccupations.Count == 0;
+        public bool isFolderActive => folderPrefab.gameObject.activeSelf;
+        public bool isEmpty => folderPrefab.IconOccupations.Count == 0;
         
         public override void Setup()
         {

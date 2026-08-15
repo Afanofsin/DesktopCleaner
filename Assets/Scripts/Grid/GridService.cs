@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Grid.IconData;
+using Grid.Services;
 using R3;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -14,8 +15,6 @@ namespace Grid
     public class GridService : SerializedMonoBehaviour
     {
         public static GridService G;
-
-        [OdinSerialize] private Dictionary<int, IconView> iconPlacement;
 
         [SerializeField] private RectTransform upperLeftBoundryForFolders;
         [SerializeField] private RectTransform lowerRightBoundryForFolders;
@@ -56,6 +55,8 @@ namespace Grid
             await UniTask.DelayFrame(2);
             await UniTask.WaitUntil(() => randomIconProvider.isInitialized == true,
                 cancellationToken: this.GetCancellationTokenOnDestroy());
+            
+            GameStateService.G.InitializeTotalCount(_totalGridList);
         }
 
         public void RegisterGrid(IconGrid grid)
@@ -115,6 +116,9 @@ namespace Grid
                 var grid = _activeGridList[i];
                 if (grid == null || !grid.gameObject.activeInHierarchy) continue;
 
+                CanvasGroup canvasGroup = grid.GetComponent<CanvasGroup>();
+                if (canvasGroup != null && canvasGroup.alpha == 0) continue;
+                
                 RectTransform gridRect = grid.GetComponent<RectTransform>();
                 if (gridRect != null && RectTransformUtility.RectangleContainsScreenPoint(gridRect, screenPosition, cam))
                 {

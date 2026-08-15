@@ -57,6 +57,7 @@ MonoBehaviour:
   iconSprite: {fileID: 2193449973950164552}
   icon: {fileID: 5843586321985829745}
   ClickButton: {fileID: 3023529978410545596}
+  isDraggingAllowed: 1
 --- !u!222 &1477633951618039026
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -330,6 +331,22 @@ PrefabInstance:
     - target: {fileID: 4309051224571263783, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626642466591777100, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fe975e53f3a8d80459acb75b879101ba, type: 3}
+    - target: {fileID: 8626642466591777100, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626642466591777100, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626642466591777100, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
