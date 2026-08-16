@@ -50,6 +50,12 @@ namespace Grid
             Destroy(gameObject);
         }
 
+        private void OnDestroy()
+        {
+            if (G == this)
+                G = null;
+        }
+
         private async UniTaskVoid Start()
         {
             await UniTask.DelayFrame(2);

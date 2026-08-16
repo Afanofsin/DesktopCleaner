@@ -26,6 +26,12 @@ namespace Grid.Services
             Destroy(this);
         }
 
+        private void OnDestroy()
+        {
+            if (G == this)
+                G = null;
+        }
+
         public void IconBinned()
         {
             binnedIcons++;
