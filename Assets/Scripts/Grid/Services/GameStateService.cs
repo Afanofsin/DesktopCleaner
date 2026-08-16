@@ -14,6 +14,7 @@ namespace Grid.Services
         public static GameStateService G;
 
         [OdinSerialize] private List<GameObject> Events;
+        [OdinSerialize] private GameObject _win;
         
         [SerializeField] private float timeSubFromIconBinned = 2f;
         
@@ -91,6 +92,7 @@ namespace Grid.Services
             if (binnedIcons.Value == totalIcons.Value)
             {
                 OnGameEnded.OnNext(Unit.Default);
+                _win.SetActive(true);
             }
         }
 

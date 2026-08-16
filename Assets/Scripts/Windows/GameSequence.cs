@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using PrimeTween;
+using R3;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class GameSequence : SerializedMonoBehaviour
     [OdinSerialize] private GameObject _mainMenu;
     [OdinSerialize] private GameObject _gamePrefab;
     [OdinSerialize] private Image _blackScreen;
+    
+    [OdinSerialize] private Button _newGameButton;
+    [OdinSerialize] private Button _resumeButton;
     
     public bool IsRunning { get; private set; }
 
@@ -36,11 +40,17 @@ public class GameSequence : SerializedMonoBehaviour
         Sequence.Create()
             .ChainDelay(1f)
             .Chain(FadeOutBlackScreen());
+        
+        _resumeButton.interactable = false;
+
+        _newGameButton.OnClickAsObservable().Subscribe(_ => StartNewGame()).AddTo(this);
+        _resumeButton.OnClickAsObservable().Subscribe(_ => ResumeGame()).AddTo(this);
     }
 
     public void StartNewGame()
     {
         IsRunning = false;
+        _resumeButton.interactable = true;
         
         Sequence.Create()
             .Chain(FadeInBlackScreen())
@@ -82,6 +92,22 @@ public class GameSequence : SerializedMonoBehaviour
             {
                 manager._mainMenu.gameObject.SetActive(true);
                 manager._current?.gameObject.SetActive(false);
+            })
+            .ChainDelay(1f)
+            .Chain(FadeOutBlackScreen());
+    }
+
+    public void GameWon()
+    {
+        IsRunning = false;
+        _resumeButton.interactable = false;
+        
+        Sequence.Create()
+            .Chain(FadeInBlackScreen())
+            .ChainCallback(this, static manager =>
+            {
+                Destroy(manager._current);
+                manager._mainMenu.gameObject.SetActive(true);
             })
             .ChainDelay(1f)
             .Chain(FadeOutBlackScreen());

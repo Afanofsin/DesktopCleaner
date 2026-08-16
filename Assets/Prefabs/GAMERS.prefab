@@ -84,10 +84,26 @@ PrefabInstance:
       propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[2]'
       value: 
       objectReference: {fileID: 6875181676993600036}
+    - target: {fileID: 2693722468566012785, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2828817473630244711, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2828817473630244711, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+    - target: {fileID: 2828817473630244711, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828817473630244711, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
+      value: '"path":"_win","value":$eref:0'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828817473630244711, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5945722887415204606, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -100,6 +116,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6575669256774704432, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6575669256774704432, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
     - target: {fileID: 6782748059445482527, guid: 63bf4bd928bc6f448b719ab3a06a3e85, type: 3}
       propertyPath: serializationData.Prefab
       value: 

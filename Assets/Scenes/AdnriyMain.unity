@@ -495,6 +495,8 @@ MonoBehaviour:
     - {fileID: 1899881862}
     - {fileID: 158220850296388889, guid: 036eacddf719e764b8d7dbde43a8fd7e, type: 3}
     - {fileID: 1812038220}
+    - {fileID: 1389660829}
+    - {fileID: 1899881863}
     - {fileID: 1165074343}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -510,9 +512,15 @@ MonoBehaviour:
     - Name: _blackScreen
       Entry: 10
       Data: 2
-    - Name: _gameRoot
+    - Name: _newGameButton
       Entry: 10
       Data: 3
+    - Name: _resumeButton
+      Entry: 10
+      Data: 4
+    - Name: _gameRoot
+      Entry: 10
+      Data: 5
 --- !u!114 &1389660829 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5336475323557954700, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
@@ -607,6 +615,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1165074344}
     m_Modifications:
+    - target: {fileID: 866368661561674136, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -120
+      objectReference: {fileID: 0}
     - target: {fileID: 3256940060975326732, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
       propertyPath: m_Name
       value: MainMenu
@@ -614,6 +626,10 @@ PrefabInstance:
     - target: {fileID: 3256940060975326732, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585885985697888778, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -32
       objectReference: {fileID: 0}
     - target: {fileID: 8415855452666753828, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
       propertyPath: serializationData.Prefab
@@ -723,8 +739,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 8415855452666753828, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 6867639819598639505, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90cdc0dadb568fd42bdc0b6a37a32045, type: 3}
