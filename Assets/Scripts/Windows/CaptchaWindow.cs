@@ -7,6 +7,7 @@ public class CaptchaWindow : MainWindow
 {
     [SerializeField] private Image muzhikImage;
     private Sequence _muzhikSequence;
+    protected override bool IsDraggable => false;
 
     private const float StartPos = -1200f;
     private const float EndPos = -80f;

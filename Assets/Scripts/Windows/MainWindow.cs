@@ -25,6 +25,7 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private RectTransform _rect;
     private Vector3 _dragOffset;
+    protected virtual bool IsDraggable => true;
 
     protected virtual void Awake()
     {
@@ -84,8 +85,8 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     protected virtual void OnDestroy() => Bag.Dispose();
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
         if (!isDraggable) return;
+        if (eventData.button != PointerEventData.InputButton.Left || !IsDraggable) return;
         
         GridService.G.MouseManager.CleanLastIcon();
         
@@ -102,6 +103,8 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnDrag(PointerEventData eventData)
     {
         if (!isDraggable) return;
+        if (!IsDraggable) return;
+        
         Camera cam = eventData.pressEventCamera != null ? eventData.pressEventCamera : GridService.G.Camera;
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rect, eventData.position, cam, out Vector3 worldPoint))
@@ -113,6 +116,8 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!isDraggable) return;
+        if (!IsDraggable) return;
+        
         _dragOffset = Vector3.zero;
         CancelDraggable();
     }
