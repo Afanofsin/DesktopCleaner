@@ -60,6 +60,12 @@ namespace Grid.Services
             Destroy(this);
         }
 
+        private void OnDestroy()
+        {
+            if (G == this)
+                G = null;
+        }
+
         private void FlipEvent()
         {
             GameObject.Destroy(_currentEvent.gameObject);
