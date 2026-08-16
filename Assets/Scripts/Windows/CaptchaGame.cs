@@ -23,6 +23,8 @@ public class Captcha : SerializedMonoBehaviour
     [OdinSerialize] private AudioClip _winClip;
     [OdinSerialize] private AudioClip _loseClip;
     [OdinSerialize] private TextMeshProUGUI _taskText;
+    [OdinSerialize] private AudioClip _numberClip;
+    [OdinSerialize] private CanvasGroup _canvasGroup;
 
     [OdinSerialize] private GameObject _progressHolder;
     
@@ -65,6 +67,7 @@ public class Captcha : SerializedMonoBehaviour
     {
         _startButton.gameObject.SetActive(true);
         _current?.gameObject.SetActive(false);
+        _canvasGroup.alpha = 1f;
     }
 
     private void Update()
@@ -138,12 +141,15 @@ public class Captcha : SerializedMonoBehaviour
         _numberImage.sprite = _numberSprites[2];
         
         Sequence.Create()
+            .ChainCallback(this, static window => window._audioSource.PlayOneShot(window._numberClip))
             .Chain(Tween.Scale(_numberImage.transform, 0.8f, 1f))
             .ChainCallback(this, static window => window._numberImage.sprite = window._numberSprites[1])
             .ChainCallback(this, static window => window._numberImage.transform.localScale = StartScale)
+            .ChainCallback(this, static window => window._audioSource.PlayOneShot(window._numberClip))
             .Chain(Tween.Scale(_numberImage.transform, 0.8f, 1f))
             .ChainCallback(this, static window => window._numberImage.sprite = window._numberSprites[0])
             .ChainCallback(this, static window => window._numberImage.transform.localScale = StartScale)
+            .ChainCallback(this, static window => window._audioSource.PlayOneShot(window._numberClip))
             .Chain(Tween.Scale(_numberImage.transform, 0.8f, 1f))
             .ChainCallback(this, static window => window.RollStage())
             .ChainCallback(this, static window => window._numberImage.enabled = false);
@@ -152,7 +158,12 @@ public class Captcha : SerializedMonoBehaviour
     private void WinGame()
     {
         _audioSource.PlayOneShot(_winClip);
-        Tween.Delay(this, _winClip.length + 0.015f, static window => window.gameObject.SetActive(false));
+
+        Sequence.Create()
+            .ChainDelay(2.5f)
+            .Chain(Tween.Alpha(_canvasGroup, 0f, 0.33f))
+            .ChainDelay(2.17f)
+            .ChainCallback(this, static window => window.gameObject.SetActive(false));
     }
     
     private void FailGame()
