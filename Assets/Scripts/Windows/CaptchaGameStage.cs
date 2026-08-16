@@ -55,6 +55,7 @@ public class CaptchaGame : SerializedMonoBehaviour
     protected void OnDestroy()
     {
         OnGameFailRx.Dispose();
+        OnStageFailRx.Dispose();
         OnStageWinRx.Dispose();
         OnGameWinRx.Dispose();
         CurrentPointsRx.Dispose();
