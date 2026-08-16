@@ -556,6 +556,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaptchaWindow
   closeButton: {fileID: 4183541981635794482}
+  backdropImage: {fileID: 2370820914989919763}
+  fillImage: {fileID: 5713684374432750423}
+  iconRoot: {fileID: 0}
+  draggableTop: {fileID: 0}
+  canvasGroup: {fileID: 0}
   muzhikImage: {fileID: 2674064245342487223}
 --- !u!114 &8965150709349622143
 MonoBehaviour:
