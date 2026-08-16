@@ -45,9 +45,13 @@ namespace Grid
             {
                 G = this;
                 MouseManager = new IconMouseManager();
+
+                cam = Camera.main;
+                rootCanvasTransform = (RectTransform)gameObject.transform.GetComponentInParent<Canvas>().transform;
+                
                 return;
             }
-            Destroy(gameObject);
+            Destroy(gameObject);    
         }
 
         private void OnDestroy()
