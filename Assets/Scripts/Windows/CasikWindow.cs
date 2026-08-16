@@ -1,3 +1,4 @@
+using Grid.Services;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,4 +20,10 @@ public class CasikWindow : MainWindow
     }
 
     private void OnButtonClick(Unit _) => audioSource.PlayOneShot(clickClip);
+
+    protected override void OnCloseButtonClick(Unit _)
+    {
+        GameStateService.G?.OnEventEnded.OnNext(Unit.Default);
+        base.OnCloseButtonClick(_);
+    }
 }

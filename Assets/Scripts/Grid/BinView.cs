@@ -7,7 +7,7 @@ namespace Grid
     {
         public void PutInBin(IconView view)
         {
-            GameStateService.G.OnIconBinned.OnNext(Unit.Default);
+            GameStateService.G.OnIconBinned.OnNext(view);
         }
     }
 }

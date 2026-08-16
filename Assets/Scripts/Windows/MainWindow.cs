@@ -16,6 +16,8 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     [SerializeField] private GameObject iconRoot;
     [SerializeField] private IconInvisible draggableTop;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private bool isEnablable = true;
+    [SerializeField] private bool isDraggable = true;
 
     private List<Image> rayCastReceivers = new();
     
@@ -52,25 +54,38 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public bool IsVisible => canvasGroup.alpha > 0f;
     public void Hide()
     {
-        canvasGroup.alpha = 0f;
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.interactable = false;
-        GridService.G?.OnFolderWindowClosed.OnNext(Unit.Default);
-        //gameObject.SetActive(false);
+        if (!isEnablable)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+            GridService.G?.OnFolderWindowClosed.OnNext(Unit.Default);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void Show()
-    { 
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.interactable = true;
-        //gameObject.SetActive(true);
+    {
+        if (!isEnablable)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
+        }
+        else
+        {
+            gameObject.SetActive(true);
+        }
     }
     
     protected virtual void OnDestroy() => Bag.Dispose();
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (!isDraggable) return;
         
         GridService.G.MouseManager.CleanLastIcon();
         
@@ -86,6 +101,7 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!isDraggable) return;
         Camera cam = eventData.pressEventCamera != null ? eventData.pressEventCamera : GridService.G.Camera;
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rect, eventData.position, cam, out Vector3 worldPoint))
@@ -96,6 +112,7 @@ public class MainWindow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isDraggable) return;
         _dragOffset = Vector3.zero;
         CancelDraggable();
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Grid.Services;
 using R3;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -47,6 +48,7 @@ public class CaptchaGame : SerializedMonoBehaviour
     public virtual void WinGame()
     {
         IsRunning = false;
+        
         OnGameWinRx.OnNext(Unit.Default);
     }
 

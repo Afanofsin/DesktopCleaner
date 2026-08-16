@@ -77,7 +77,6 @@ namespace Grid
         {
             if (!eventView.isDraggingAllowed) return;
             
-            
             var (targetGrid, droppedOn) = GridService.G.GetClosestSlotAtPosition(eventData.position, maxSnapDistance: 200f);
         
             if (droppedOn == null || targetGrid == null)
@@ -85,10 +84,19 @@ namespace Grid
                 CancelDrag(eventView);
                 return;
             }
-
-            // 2. Check if the resolved slot already has an icon
+            
             targetGrid.IconOccupations.TryGetValue(droppedOn, out var hitIcon);
 
+            if (eventView is BinView)
+            {
+                var isFolder = targetGrid.GetComponentInParent<FolderView>();
+                if (isFolder != null)
+                {
+                    CancelDrag(eventView);
+                    return;
+                }
+            }
+            
             if (eventView is FolderView draggedFolder && hitIcon is BinView)
             {
                 if (!draggedFolder.isEmpty)
@@ -135,7 +143,7 @@ namespace Grid
             
                 if (swappedIcon != null)
                 {
-                    SnapToSlotTransform(eventView, lastIconSlot.transform);
+                    SnapToSlotTransform(swappedIcon, lastIconSlot.transform);
                 }
             
                 lastIconSlot = null;
@@ -180,7 +188,6 @@ namespace Grid
             IconView view;
             if (lastClickedIcon?.gameObject == eventData.pointerClick)
             {
-                Debug.Log("Clicked the same button");
                 view = lastClickedIcon;
                 if (_timeOfLastClick > Time.time - _doubleClickTimeframe)
                 {
@@ -192,7 +199,6 @@ namespace Grid
             }
             else
             {
-                Debug.Log("Clicked");
                 CleanLastIcon();
             
                 var obj = eventData.pointerClick;
@@ -207,7 +213,6 @@ namespace Grid
 
         private void DoubleClickHandler(IconView view, PointerEventData eventData)
         {
-            Debug.Log("DoubleClick");
             view?.OnDoubleClick();
         }
 
@@ -241,71 +246,3 @@ namespace Grid
         }
     }
 }
-
-
-
-// GameObject droppedOn = eventData.pointerCurrentRaycast.gameObject;
-//
-// if (droppedOn == null)
-// {
-//     CancelDrag(eventView);
-//     return;
-// }
-//
-// IconView hitIcon = droppedOn.GetComponent<IconView>();
-// if (hitIcon != null && hitIcon != eventView)
-// {
-//     droppedOn = hitIcon.transform.parent.gameObject;
-// }
-// //
-// else
-// {
-//     var targetGrid = GridService.G?.SearchForActiveGridWithSlot(droppedOn);
-//     if (targetGrid != null && targetGrid.IconOccupations.TryGetValue(droppedOn, out var existingIcon))
-//     {
-//         hitIcon = existingIcon;
-//     }
-// }
-
-//
-// if (!_currentGrid.TryMoveIcon(eventView, droppedOn, lastIconSlot, out var swappedIcon))
-// {
-//     CancelDrag(eventView);
-// }
-// //else if (swappedIcon is BinView)
-// else if (swappedIcon is FolderView folder)
-// {
-//     var slotToMoveTo = folder.PutInFolder(eventView);
-//     if (slotToMoveTo == null) CancelDrag(eventView);
-//     else
-//     {
-//         eventView.gameObject.transform.SetParent(slotToMoveTo.transform);
-//         RectTransform rect = eventView.GetComponent<RectTransform>();
-//         rect.anchoredPosition = Vector2.zero;
-//         
-//         _currentGrid.RemoveIcon(lastIconSlot);
-//         
-//         lastIconSlot = null;
-//     
-//         eventView.CancelDraggableView();
-//     }
-// }
-// else
-// {
-//     eventView.gameObject.transform.SetParent(droppedOn.transform);
-//     RectTransform rect = eventView.GetComponent<RectTransform>();
-//     rect.anchoredPosition = Vector2.zero;
-//
-//     if (swappedIcon != null)
-//     {
-//         swappedIcon.gameObject.transform.SetParent(lastIconSlot.transform);
-//         rect = swappedIcon.GetComponent<RectTransform>();
-//         rect.anchoredPosition = Vector2.zero;
-//     }
-//
-//     lastIconSlot = null;
-//     
-//     eventView.CancelDraggableView();
-//     eventView.ChangeBackdropAlpha(0.1f);
-//     eventView.ActivateBackdrop();
-// }

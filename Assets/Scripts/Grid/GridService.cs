@@ -56,7 +56,7 @@ namespace Grid
             await UniTask.WaitUntil(() => randomIconProvider.isInitialized == true,
                 cancellationToken: this.GetCancellationTokenOnDestroy());
             
-            GameStateService.G.InitializeTotalCount(_totalGridList);
+            GameStateService.G.Initialize(_totalGridList);
         }
 
         public void RegisterGrid(IconGrid grid)
@@ -135,7 +135,7 @@ namespace Grid
 
             if (targetGrid == null) return (null, null);
 
-            // 2. Find the closest slot in the selected target grid
+
             GameObject closestSlot = null;
             float closestDistSqr = float.MaxValue;
             float maxDistSqr = maxSnapDistance * maxSnapDistance;

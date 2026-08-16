@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grid.Services;
 using PrimeTween;
 using R3;
 using Sirenix.OdinInspector;
@@ -152,7 +153,11 @@ public class Captcha : SerializedMonoBehaviour
     private void WinGame()
     {
         _audioSource.PlayOneShot(_winClip);
-        Tween.Delay(this, _winClip.length + 0.015f, static window => window.gameObject.SetActive(false));
+        Tween.Delay(this, _winClip.length + 0.015f, static window =>
+        {
+            GameStateService.G?.OnEventEnded.OnNext(Unit.Default);
+            window.gameObject.SetActive(false);
+        });
     }
     
     private void FailGame()

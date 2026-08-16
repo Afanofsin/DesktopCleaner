@@ -13,6 +13,7 @@ public class IconGrid : SerializedMonoBehaviour
     
     [OdinSerialize] private Dictionary<int, IconView> iconPlacement;
     [SerializeField] private bool shouldBeRandomlyPopulated = true;
+    [SerializeField] private bool shouldBeUnique = false;
 
     [SerializeField] [PropertyRange(0, "slotsAmount")]
     private int slotsToPopulate;
@@ -23,7 +24,7 @@ public class IconGrid : SerializedMonoBehaviour
     public HashSet<GameObject> AllIconSlots = new();
     private Dictionary<int, GameObject> _iconSlotsByID = new();
     public Dictionary<int, GameObject> IconSlotsByID => _iconSlotsByID;
-    private Dictionary<GameObject, IconView> _iconOccupations = new();
+    [ShowInInspector] private Dictionary<GameObject, IconView> _iconOccupations = new();
     public Dictionary<GameObject, IconView> IconOccupations => _iconOccupations;
     
     private bool isInit = false;
@@ -44,10 +45,18 @@ public class IconGrid : SerializedMonoBehaviour
 
     public void Initialize()
     {
+        if (isInit) return;
+        isInit = true;
+        
         Debug.Log("Init");
         GridService.G?.RegisterGrid(this);
         GridService.G?.AddToActiveGrid(this);
         if (rootForIcons == null) rootForIcons = transform;
+        
+        _iconSlotsByID.Clear();
+        AllIconSlots.Clear();
+        _iconOccupations.Clear();
+        
         int id = 0;
         for (int i = 0; i < slotsAmount; i++)
         {
@@ -58,30 +67,45 @@ public class IconGrid : SerializedMonoBehaviour
             id++;
         }
 
-        foreach (var kvp in iconPlacement)
+        if (iconPlacement != null || iconPlacement.Count != 0)
         {
-            SpawnIconAtSlot(kvp.Key,kvp.Value);
+            foreach (var kvp in iconPlacement)
+            {
+                if (kvp.Value != null)
+                {
+                    SpawnIconAtSlot(kvp.Key,kvp.Value);
+                }
+            }
         }
 
         if (shouldBeRandomlyPopulated)
         {
             int slotN = 0;
-            for (int i = 0; i < slotsToPopulate; i++)
+            Debug.Log($"Random Enabled");
+            for (int i = 0; i < slotsAmount && slotN < slotsToPopulate; i++)
             {
-                for (; slotN < slotsAmount; slotN++)
+                if (!_iconSlotsByID.TryGetValue(i, out var obj))
                 {
-                    IconView view = GridService.G?.RandomIconProvider.GetIcon(this, true);
-                    SpawnIconAtSlot(slotN, view);
+                    continue;
+                }
+                
+                if (_iconOccupations.TryGetValue(obj, out var dictView) && dictView != null)
+                {
+                    continue;
+                }
+                    
+                IconView view = GridService.G?.RandomIconProvider.GetIcon(this, shouldBeUnique);
+                if (view != null)
+                {
+                    SpawnIconAtSlot(i, view);
+                    slotN++;
                 }
             }
         }
-
-        isInit = true;
     }
 
     void Start()
     {
-        //Debug.Log("Awakening");
         if (isInit) return;
         Initialize();
     }
@@ -114,6 +138,7 @@ public class IconGrid : SerializedMonoBehaviour
 
     public void SpawnIconAtSlot(int slot, IconView view)
     {
+        if (view == null) return;
         var slotObj = _iconSlotsByID[slot];
 
         _iconOccupations.TryGetValue(slotObj, out var dictView);

@@ -65,7 +65,6 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  _button: {fileID: 3023529978410545596}
 --- !u!114 &3023529978410545596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +125,7 @@ MonoBehaviour:
   iconSprite: {fileID: 2193449973950164552}
   icon: {fileID: 5843586321985829745}
   ClickButton: {fileID: 3023529978410545596}
+  IconType: 0
   isDraggingAllowed: 1
 --- !u!1001 &1045167098337350584
 PrefabInstance:
@@ -332,6 +332,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8626642466591777100, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c2723ad1f25601b42b5cceec8a6af51b, type: 3}
     - target: {fileID: 8626642466591777100, guid: 0fe5d9e24daadbe43bcfb40a44b73f25, type: 3}
       propertyPath: m_Color.b
       value: 1

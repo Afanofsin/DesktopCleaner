@@ -14,15 +14,15 @@ namespace Grid
         [SerializeField] private string pathToFolders;
         [SerializeField] private string pathToSpecial;
 
-        private List<GameObject> icons = new();
-        private List<GameObject> folders = new();
-        private List<GameObject> special= new() ;
+        [ShowInInspector] private List<GameObject> icons = new();
+        [ShowInInspector] private List<GameObject> folders = new();
+        [ShowInInspector] private List<GameObject> special= new() ;
         
         public Dictionary<IconGrid, HashSet<GameObject>> UniqueIconsProvided = new();
         
         public bool isInitialized = false;
         
-        private void Start()
+        private void Awake()
         {
             icons = Resources.LoadAll<GameObject>(pathToIcons).ToList();
             folders = Resources.LoadAll<GameObject>(pathToFolders).ToList();
@@ -59,6 +59,7 @@ namespace Grid
 
             if (grid != null)
             {
+                UniqueIconsProvided.TryAdd(grid, new HashSet<GameObject>());
                 UniqueIconsProvided[grid].Add(view);
             }
             return view.GetComponent<IconView>();
