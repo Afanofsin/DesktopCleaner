@@ -1,7 +1,5 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using PrimeTween;
-using R3;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -32,10 +30,18 @@ public class GameSequence : SerializedMonoBehaviour
         Instance = this;
         
         DontDestroyOnLoad(this);
+        
+        _blackScreen.color = Color.black;
+
+        Sequence.Create()
+            .ChainDelay(1f)
+            .Chain(FadeOutBlackScreen());
     }
 
     public void StartNewGame()
     {
+        IsRunning = false;
+        
         Sequence.Create()
             .Chain(FadeInBlackScreen())
             .ChainCallback(this, static manager =>
@@ -43,7 +49,7 @@ public class GameSequence : SerializedMonoBehaviour
                 manager.ReplaceGame().Forget();
                 manager._mainMenu.gameObject.SetActive(false);
             })
-            .ChainDelay(0.25f)
+            .ChainDelay(1f)
             .Chain(FadeOutBlackScreen())
             .ChainDelay(1f)
             .ChainCallback(this, static manager => manager.IsRunning = true);
@@ -60,7 +66,7 @@ public class GameSequence : SerializedMonoBehaviour
                 manager._mainMenu.gameObject.SetActive(false);
                 manager._current.gameObject.SetActive(true);
             })
-            .ChainDelay(0.25f)
+            .ChainDelay(1f)
             .Chain(FadeOutBlackScreen())
             .ChainDelay(1f)
             .ChainCallback(this, static manager => manager.IsRunning = true);
@@ -77,7 +83,7 @@ public class GameSequence : SerializedMonoBehaviour
                 manager._mainMenu.gameObject.SetActive(true);
                 manager._current?.gameObject.SetActive(false);
             })
-            .ChainDelay(0.25f)
+            .ChainDelay(1f)
             .Chain(FadeOutBlackScreen());
     }
 
@@ -95,6 +101,7 @@ public class GameSequence : SerializedMonoBehaviour
         }
 
         _current = Instantiate(_gamePrefab, _gameRoot.transform, false);
+        _current.transform.SetAsFirstSibling();
     }
 
     private Tween FadeInBlackScreen()
@@ -111,27 +118,4 @@ public class GameSequence : SerializedMonoBehaviour
             .Chain(Tween.Alpha(_blackScreen, 0f, 0.75f))
             .ChainCallback(this, sequence => sequence._blackScreen.enabled = false);
     }
-}
-
-public class MainMenu : SerializedMonoBehaviour
-{
-    [OdinSerialize] private Button _newGameButton;
-    [OdinSerialize] private Button _resumeButton;
-
-    private void Awake()
-    {
-        _resumeButton.enabled = false;
-
-        _newGameButton.OnClickAsObservable().Subscribe(_ => StartNewGame().Forget()).AddTo(this);
-        _resumeButton.OnClickAsObservable().Subscribe(_ => ResumeGame()).AddTo(this);
-    }
-
-    private async UniTaskVoid StartNewGame()
-    {
-        GameSequence.Instance.StartNewGame();
-        await UniTask.Delay(TimeSpan.FromSeconds(1.25f));
-        _resumeButton.enabled = true;
-    }
-
-    private void ResumeGame() => GameSequence.Instance.ResumeGame();
 }

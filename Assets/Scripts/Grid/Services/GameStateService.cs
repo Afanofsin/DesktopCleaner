@@ -123,6 +123,8 @@ namespace Grid.Services
 
             while (!ct.IsCancellationRequested)
             {
+                if(!GameSequence.Instance.IsRunning) return;
+                
                 Debug.Log($"{currentTimeTillNextEvent}");
                 currentTimeTillNextEvent -= Time.deltaTime;
 
@@ -151,6 +153,8 @@ namespace Grid.Services
 
             while (!ct.IsCancellationRequested)
             {
+                if (!GameSequence.Instance.IsRunning) return;
+                
                 if (isGameWon) return;
                 totalTimeTimer.Value += Time.deltaTime;
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: ct);

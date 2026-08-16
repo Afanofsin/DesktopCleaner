@@ -11,6 +11,7 @@ public class PuskButton : SerializedMonoBehaviour
 {
     [OdinSerialize] private RectTransform _exitWindow;
     [OdinSerialize] private Button _puskButton;
+    [OdinSerialize] private Button _exitButton;
 
     private const int StartPosY = -500;
     private const int EndPosY = 90;
@@ -26,31 +27,39 @@ public class PuskButton : SerializedMonoBehaviour
         _puskButtonRect = (RectTransform)_puskButton.transform;
 
         _puskButton.OnClickAsObservable().Subscribe(_ => ToggleExitWindow()).AddTo(this);
+        _exitButton.OnClickAsObservable().Subscribe(_ => GameSequence.Instance?.ExitGame()).AddTo(this);
     }
 
     private void Update()
     {
         Pointer pointer = Pointer.current;
         if (!_isOpen || pointer == null || !pointer.press.wasPressedThisFrame)
+        {
             return;
+        }
 
         Vector2 pointerPosition = pointer.position.ReadValue();
         
-        bool clickedExitWindow = RectTransformUtility.RectangleContainsScreenPoint(
-            _exitWindow, pointerPosition, _uiCamera);
-        bool clickedPuskButton = RectTransformUtility.RectangleContainsScreenPoint(
-            _puskButtonRect, pointerPosition, _uiCamera);
+        bool clickedExitWindow = RectTransformUtility.RectangleContainsScreenPoint(_exitWindow, pointerPosition, _uiCamera);
+        
+        bool clickedPuskButton = RectTransformUtility.RectangleContainsScreenPoint(_puskButtonRect, pointerPosition, _uiCamera);
 
         if (!clickedExitWindow && !clickedPuskButton)
+        {
             PlayHideAnim();
+        }
     }
 
     private void ToggleExitWindow()
     {
         if (_isOpen)
+        {
             PlayHideAnim();
+        }
         else
+        {
             PlayShowAnim();
+        }
     }
 
     private void PlayShowAnim()
