@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Grid.Services;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Grid
@@ -9,6 +10,7 @@ namespace Grid
         [SerializeField] private Image iconSprite;
         [SerializeField] private IconInvisible icon;
         public Button ClickButton;
+        public IconType IconType;
 
         public bool isDraggingAllowed = true;
         

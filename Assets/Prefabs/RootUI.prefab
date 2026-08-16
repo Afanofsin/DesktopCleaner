@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 8675495967707596551}
   - component: {fileID: 8470988167764152129}
   - component: {fileID: 3640401892045595578}
+  - component: {fileID: 1542436802850749031}
   m_Layer: 5
   m_Name: Wallpaper
   m_TagString: Untagged
@@ -216,6 +217,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1542436802850749031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2151787850596154826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a263dac24e034596af2de58e9c89c55c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grid.WallpaperClicker
 --- !u!1 &2983127223702448165
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,18 +493,98 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: -5531914489811491769, guid: 51ddab2d78fb6f64f9bcc0800b2bc168, type: 3}
+    - {fileID: 4955059028296594931, guid: 328ae719de2bc5d40ad3e5c0efeb0e2b, type: 3}
+    - {fileID: 1112835424259752930, guid: 0b8010e1566841240b77f4818fa5d7b7, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
     - Name: iconPlacement
-      Entry: 6
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[Grid.IconView,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 8
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: AllIconSlots
       Entry: 7
-      Data: 0|System.Collections.Generic.HashSet`1[[UnityEngine.GameObject, UnityEngine.CoreModule]],
+      Data: 2|System.Collections.Generic.HashSet`1[[UnityEngine.GameObject, UnityEngine.CoreModule]],
         System.Core
     - Name: 
       Entry: 12
@@ -507,7 +600,8 @@ MonoBehaviour:
   slotsAmount: 126
   rootForIcons: {fileID: 0}
   shouldBeRandomlyPopulated: 1
-  slotsToPopulate: 0
+  shouldBeUnique: 0
+  slotsToPopulate: 34
 --- !u!1 &7467271116102460209
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,79 +760,21 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: -5531914489811491769, guid: 51ddab2d78fb6f64f9bcc0800b2bc168, type: 3}
-    - {fileID: 4955059028296594931, guid: 328ae719de2bc5d40ad3e5c0efeb0e2b, type: 3}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: iconPlacement
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[Grid.IconView,
-        Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 4
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: OnFolderWindowOpened
       Entry: 7
-      Data: 2|R3.Subject`1[[R3.Unit, R3]], R3
+      Data: 0|R3.Subject`1[[R3.Unit, R3]], R3
     - Name: 
       Entry: 8
       Data: 
     - Name: OnFolderWindowClosed
       Entry: 7
-      Data: 3|R3.Subject`1[[R3.Unit, R3]], R3
+      Data: 1|R3.Subject`1[[R3.Unit, R3]], R3
     - Name: 
       Entry: 8
       Data: 

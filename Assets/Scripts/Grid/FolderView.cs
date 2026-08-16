@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using R3;
+using TMPro;
 
 namespace Grid
 {
@@ -8,7 +9,9 @@ namespace Grid
     {
         [SerializeField] private IconGrid folderPrefab;
         [SerializeField] private MainWindow folderWindow;
+        [SerializeField] private TMP_Text folderName;
         
+        public string FolderName => folderName.text;
         public bool isFolderActive => folderPrefab.gameObject.activeSelf;
         public bool isEmpty => folderPrefab.IconOccupations.Count == 0;
         
