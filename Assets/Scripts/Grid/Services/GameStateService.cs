@@ -155,7 +155,7 @@ namespace Grid.Services
         {
             GameObject selectedEvent = Events[Random.Range(0, Events.Count)];
             _currentEvent = Instantiate(selectedEvent, GridService.G?.RootCanvasTransform);
-            selectedEvent.SetActive(true);
+            _currentEvent.SetActive(true);
         }
         
     }

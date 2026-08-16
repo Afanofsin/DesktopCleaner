@@ -584,7 +584,8 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 7525842840372660399}
     - {fileID: 1449221106926893622}
-    - {fileID: 7426322227633400001}
+    - {fileID: 5529785970403114625}
+    - {fileID: 866337635209843243}
     - {fileID: 6806856247358958207}
     - {fileID: 4862142155850486813}
     - {fileID: 7518210118107416779}
@@ -610,7 +611,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 10
       Data: 0
@@ -621,6 +622,9 @@ MonoBehaviour:
       Entry: 10
       Data: 2
     - Name: 
+      Entry: 10
+      Data: 3
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -628,13 +632,13 @@ MonoBehaviour:
       Data: 
     - Name: _startButton
       Entry: 10
-      Data: 3
+      Data: 4
     - Name: _progressBar
       Entry: 10
-      Data: 4
+      Data: 5
     - Name: _numberImage
       Entry: 10
-      Data: 5
+      Data: 6
     - Name: _numberSprites
       Entry: 7
       Data: 1|System.Collections.Generic.List`1[[UnityEngine.Sprite, UnityEngine.CoreModule]],
@@ -644,13 +648,13 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 10
-      Data: 6
-    - Name: 
-      Entry: 10
       Data: 7
     - Name: 
       Entry: 10
       Data: 8
+    - Name: 
+      Entry: 10
+      Data: 9
     - Name: 
       Entry: 13
       Data: 
@@ -659,28 +663,28 @@ MonoBehaviour:
       Data: 
     - Name: _pointsText
       Entry: 10
-      Data: 9
+      Data: 10
     - Name: _audioSource
       Entry: 10
-      Data: 10
+      Data: 11
     - Name: _winClip
       Entry: 10
-      Data: 11
+      Data: 12
     - Name: _loseClip
       Entry: 10
-      Data: 12
+      Data: 13
     - Name: _taskText
       Entry: 10
-      Data: 13
+      Data: 14
     - Name: _numberClip
       Entry: 10
-      Data: 14
+      Data: 15
     - Name: _canvasGroup
       Entry: 10
-      Data: 15
+      Data: 16
     - Name: _progressHolder
       Entry: 10
-      Data: 16
+      Data: 17
 --- !u!82 &5219196329394266495
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1160,7 +1164,8 @@ RectTransform:
   m_Children:
   - {fileID: 7424303162201892604}
   - {fileID: 5241003606375180356}
-  - {fileID: 8699796637883985569}
+  - {fileID: 5983530459266267361}
+  - {fileID: 3318372603024290665}
   m_Father: {fileID: 2870113681939757640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -1555,6 +1560,30 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+    - target: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
+      value: '"path":"_captchaImage","value":$eref:0'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[1]'
+      value: '"path":"_captchaInput","value":$eref:1'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2260855442784677067}
+    - target: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1698565746478312314}
     - target: {fileID: 9196487752219592298, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
       propertyPath: m_Name
       value: TextCaptchaGame
@@ -1564,6 +1593,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+--- !u!114 &1698565746478312314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 932635472184567482, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+  m_PrefabInstance: {fileID: 1973675638422310336}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_InputField
+--- !u!114 &2260855442784677067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 289298563269222667, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
+  m_PrefabInstance: {fileID: 1973675638422310336}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &5529785970403114625 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6331595448005030721, guid: 36f7a18bca6d6b645994e65a18ac75b6, type: 3}
@@ -2548,7 +2599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955fd50591f248fe83947db48734c1db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bingus
---- !u!1001 &5839649139237116119
+--- !u!1001 &5697797752452424453
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -2556,10 +2607,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5898450514465511046}
     m_Modifications:
-    - target: {fileID: 872284298297820742, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1335538464196903067, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2572,23 +2619,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2405137173272649300, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2652949293302812466, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2780244213421030789, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2942737810472354362, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2958522495562719398, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
@@ -2604,23 +2639,11 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 4834470864689705262, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-    - target: {fileID: 4881683207698495225, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5252282196439175357, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5331967864929775301, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5724420164247196676, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5890129288274398223, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
@@ -2686,15 +2709,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998486700545839212, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6998486700545839212, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6998486700545839212, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6998486700545839212, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2716,82 +2739,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
-      value: '"path":"_captchaImage","value":$eref:0'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[1]'
-      value: '"path":"_captchaInput","value":$eref:1'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[2]'
-      value: '"path":"_texts.{\"wxu4b","value":$eref:2'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
-      value: 
-      objectReference: {fileID: 3806117524543486603}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[1]'
-      value: 
-      objectReference: {fileID: 4332642332341026106}
-    - target: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[2]'
-      value: 
-      objectReference: {fileID: 21300000, guid: 2a08025d99a80c14f8c871fd00544d02, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
---- !u!114 &3806117524543486603 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
+--- !u!114 &866337635209843243 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7338776442595533404, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-  m_PrefabInstance: {fileID: 5839649139237116119}
+  m_CorrespondingSourceObject: {fileID: 4834470864689705262, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
+  m_PrefabInstance: {fileID: 5697797752452424453}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: caf0d8b4325c4fb1a73bd5a224f23218, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &4332642332341026106 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7866164352291005933, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-  m_PrefabInstance: {fileID: 5839649139237116119}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_InputField
---- !u!114 &7426322227633400001 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3892518878601408534, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-  m_PrefabInstance: {fileID: 5839649139237116119}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567a31d27c874805a136b34e95fed9f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CaptchaTextGame
---- !u!224 &8699796637883985569 stripped
+  m_EditorClassIdentifier: Assembly-CSharp::Windows.SliderGame
+--- !u!224 &3318372603024290665 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3004317671028340342, guid: a58937d3b5e63c24aa9591101b916940, type: 3}
-  m_PrefabInstance: {fileID: 5839649139237116119}
+  m_CorrespondingSourceObject: {fileID: 6998486700545839212, guid: 448d6772e8a9a06458f6dfc6347ad62a, type: 3}
+  m_PrefabInstance: {fileID: 5697797752452424453}
   m_PrefabAsset: {fileID: 0}

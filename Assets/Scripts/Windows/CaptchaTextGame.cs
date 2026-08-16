@@ -18,7 +18,7 @@ public class CaptchaTextGame : CaptchaGame
     
     private void Awake()
     {
-        PointsGoal = 3;
+        PointsGoal = 2;
 
         _captchaInput.OnEndEditAsObservable().Subscribe(ValidateInput);
     }

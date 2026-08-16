@@ -544,7 +544,7 @@ MonoBehaviour:
   rootForIcons: {fileID: 2973189152109588984}
   shouldBeRandomlyPopulated: 1
   shouldBeUnique: 0
-  slotsToPopulate: 0
+  slotsToPopulate: 1
 --- !u!225 &656920802841995600
 CanvasGroup:
   m_ObjectHideFlags: 0

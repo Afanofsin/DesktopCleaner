@@ -84,6 +84,12 @@ namespace Grid
                 CancelDrag(eventView);
                 return;
             }
+
+            if (droppedOn == lastIconSlot)
+            {
+                CancelDrag(eventView);
+                return;
+            }
             
             targetGrid.IconOccupations.TryGetValue(droppedOn, out var hitIcon);
 
@@ -176,9 +182,6 @@ namespace Grid
 
         private void CancelDrag(IconView eventView)
         {
-            // eventView.gameObject.transform.SetParent(lastIconSlot.transform);
-            // RectTransform rect = eventView.GetComponent<RectTransform>();
-            // rect.anchoredPosition = Vector2.zero;
             SnapToSlotTransform(eventView, lastIconSlot.transform);
             eventView.CancelDraggableView();
         }
