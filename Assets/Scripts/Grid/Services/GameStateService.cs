@@ -123,24 +123,25 @@ namespace Grid.Services
 
             while (!ct.IsCancellationRequested)
             {
-                if(!GameSequence.Instance.IsRunning) return;
-                
-                Debug.Log($"{currentTimeTillNextEvent}");
-                currentTimeTillNextEvent -= Time.deltaTime;
+                if (GameSequence.Instance.IsRunning)
+                {
+                    Debug.Log($"{currentTimeTillNextEvent}");
+                    currentTimeTillNextEvent -= Time.deltaTime;
 
-                if (isGameWon) return;
-                
-                if (isEventActive && currentTimeTillNextEvent <= minTimeTillNextEvent)
-                {
-                    currentTimeTillNextEvent = minTimeTillNextEvent;
-                    await UniTask.WaitUntil(() => !isEventActive, cancellationToken: ct);
-                }
-                
-                if (currentTimeTillNextEvent <= 0f && !isEventActive)
-                {
-                    currentTimeTillNextEvent = timeTillNextEvent;
-                    isEventActive = true;
-                    SelectEvent();
+                    if (isGameWon) return;
+
+                    if (isEventActive && currentTimeTillNextEvent <= minTimeTillNextEvent)
+                    {
+                        currentTimeTillNextEvent = minTimeTillNextEvent;
+                        await UniTask.WaitUntil(() => !isEventActive, cancellationToken: ct);
+                    }
+
+                    if (currentTimeTillNextEvent <= 0f && !isEventActive)
+                    {
+                        currentTimeTillNextEvent = timeTillNextEvent;
+                        isEventActive = true;
+                        SelectEvent();
+                    }
                 }
 
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: ct);
@@ -153,10 +154,12 @@ namespace Grid.Services
 
             while (!ct.IsCancellationRequested)
             {
-                if (!GameSequence.Instance.IsRunning) return;
-                
-                if (isGameWon) return;
-                totalTimeTimer.Value += Time.deltaTime;
+                if (GameSequence.Instance.IsRunning)
+                {
+                    if (isGameWon) return;
+                    totalTimeTimer.Value += Time.deltaTime;
+                }
+
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: ct);
             }
         }

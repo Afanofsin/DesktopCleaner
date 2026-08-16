@@ -27,7 +27,11 @@ public class PuskButton : SerializedMonoBehaviour
         _puskButtonRect = (RectTransform)_puskButton.transform;
 
         _puskButton.OnClickAsObservable().Subscribe(_ => ToggleExitWindow()).AddTo(this);
-        _exitButton.OnClickAsObservable().Subscribe(_ => GameSequence.Instance?.ExitGame()).AddTo(this);
+        _exitButton.OnClickAsObservable().Subscribe(_ =>
+        {
+            GameSequence.Instance?.ExitGame();
+            ToggleExitWindow();
+        }).AddTo(this);
     }
 
     private void Update()
